@@ -43,7 +43,7 @@ class gameScreen:
             self.player.move(0, 1)
         
         # Fill the screen with white
-        self.screen.fill((255, 255, 255))
+        self.screen.fill((1, 100, 75))
         
         # Draw the player on the screen
         self.player.draw(self.screen)
