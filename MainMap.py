@@ -1,23 +1,17 @@
 import pygame
-import sys
 from CharachterEntities import *
 from UsefulMethods import *
 
-
-
-class gameScreen:
+class MainScreen():
     def __init__(self, width, height, title):
         self.width = width
         self.height = height
         self.title = title
         self.running = True
         self.objects = []
+        self.screens = []
         self.counter = 0
-        
-        # Initialize Pygame
-        pygame.init()
-        
-        # Set up the display
+
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption(self.title)
         
@@ -31,7 +25,6 @@ class gameScreen:
         self.entity1 = Entity(300, 300, 50, 50, (0, 128, 255))
         self.entity2 = Entity(600, 600, 50, 50, (0, 128, 255))
 
-
         #add all entities to screen object list
         self.objects.append(self.entity1)
         self.objects.append(self.entity2)
@@ -41,7 +34,11 @@ class gameScreen:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-    
+
+    def quit(self):
+        pygame.quit()
+        sys.exit()
+
     def update(self):
         # Get the set of keys pressed and check for user input
         keys = pygame.key.get_pressed()
@@ -60,33 +57,11 @@ class gameScreen:
         # Draw the player on the screen
         self.player.draw(self.screen)
 
-        
         #draw entities
-        for entit in self.objects:
-            entit.draw(self.screen)
-            draw_hitbox(self.screen, entit)
+        self.entity1.draw(self.screen)
         
-
-
-        #hitboxes
-        draw_hitbox(self.screen, self.player)
         # Update the display
         pygame.display.flip()
-        
-    def run(self):
-        while self.running:
-            self.handle_events()
-            self.detect_collisions()
-            self.update()
-            
-            
-            # Cap the frame rate
-            self.clock.tick(60)
-        self.quit()
-    
-    def quit(self):
-        pygame.quit()
-        sys.exit()
 
     def detect_collisions(self):
         player_leftX, player_rightX,  player_highY, player_lowY = getCollisionBounds(self.player)
@@ -96,6 +71,8 @@ class gameScreen:
                 (is_between(entity_highY, entity_lowY, player_highY) or is_between(entity_highY, entity_lowY, player_lowY)):
                 # Collision detected, handle it
                 self.handle_collision(entit)
+                return 1
+        return 0
                 
 
           
@@ -123,8 +100,12 @@ class gameScreen:
                     self.player.x -= overlap_x
                 else:
                     self.player.x += overlap_x
+        
+
+       
 
         
 
-    
 
+
+        

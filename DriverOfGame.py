@@ -1,4 +1,4 @@
-from GameScreen import gameScreen
+from ScreenManager import gameScreen
 
 
 
