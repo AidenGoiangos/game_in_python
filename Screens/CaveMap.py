@@ -1,16 +1,16 @@
 import pygame
 from CharachterEntities import *
 from UsefulMethods import *
-
+import sys
 class CaveScreen():
-    def __init__(self, width, height, title, player):
+    def __init__(self, width, height, title, player, score_val):
         self.width = width
         self.height = height
         self.title = title
         self.running = True
         self.objects = []
         self.counter = 0
-        self.score_value = 0
+        self.score_value = score_val
 
 
         self.screen = pygame.display.set_mode((self.width, self.height))
@@ -31,12 +31,12 @@ class CaveScreen():
         self.objects.append(self.entity2)
         self.font = pygame.font.Font('freesansbold.ttf', 32)
 
-        
+
     def show_score(self, score_value):
         self.score_value = score_value
         self.score = self.font.render("Score : " + str(self.score_value), True, (255, 255, 255))
         self.screen.blit(self.score, (10, 10))
-        return self.score_value + 1
+
 
 
 
@@ -69,7 +69,11 @@ class CaveScreen():
 
         #draw entities
         self.entity1.draw(self.screen)
-        
+        self.entity2.draw(self.screen)
+
+        self.show_score(self.score_value)
+
+
         # Update the display
         pygame.display.flip()
 

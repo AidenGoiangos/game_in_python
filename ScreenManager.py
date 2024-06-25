@@ -6,6 +6,7 @@ from Screens.MainMap import MainScreen
 from Screens.CaveMap import CaveScreen
 
 
+
 class gameScreen:
     def __init__(self, width, height, title):
         self.width = width
@@ -27,15 +28,13 @@ class gameScreen:
     
 
         # Set up the displays
-        mainScreen = MainScreen(self.width, self.height, self.title, self.player)
-        caveScreen = CaveScreen(self.width, self.height, self.title, self.player)
+        mainScreen = MainScreen(self.width, self.height, self.title, self.player, self.score_value)
+        caveScreen = CaveScreen(self.width, self.height, self.title, self.player, self.score_value)
         #add them to the screens list
         self.screens.append(mainScreen)
         self.screens.append(caveScreen)
         
 
-    def show_score(self):
-        self.score_value = self.screens[self.screen_pointer].show_score(self.score_value)
 
     def run(self):
         while self.running:
@@ -48,10 +47,16 @@ class gameScreen:
             if self.screen_pointer != x:
                 self.screens[self.screen_pointer].player.x = 100
                 self.screens[self.screen_pointer].player.y = 100
+
+                self.screens[self.screen_pointer].score_value = self.screens[self.screen_pointer].score_value + 1
+                for i in range(len(self.screens)):
+                    if self.screen_pointer != i:
+                        self.screens[i].score_value = self.screens[self.screen_pointer].score_value
+                
             
 
             self.screens[self.screen_pointer].update()
-            self.show_score()
+            
             
             # Cap the frame rate
             self.screens[self.screen_pointer].clock.tick(60)
