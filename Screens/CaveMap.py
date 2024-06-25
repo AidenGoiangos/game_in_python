@@ -10,6 +10,8 @@ class CaveScreen():
         self.running = True
         self.objects = []
         self.counter = 0
+        self.score_value = 0
+
 
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption(self.title)
@@ -27,6 +29,15 @@ class CaveScreen():
         #add all entities to screen object list
         self.objects.append(self.entity1)
         self.objects.append(self.entity2)
+        self.font = pygame.font.Font('freesansbold.ttf', 32)
+
+        
+    def show_score(self, score_value):
+        self.score_value = score_value
+        self.score = self.font.render("Score : " + str(self.score_value), True, (255, 255, 255))
+        self.screen.blit(self.score, (10, 10))
+        return self.score_value + 1
+
 
 
     def handle_events(self):
@@ -76,28 +87,8 @@ class CaveScreen():
 
           
     def handle_collision(self, entity):
-        # Determine overlap between player and entity
-        player_rect = pygame.Rect(self.player.x, self.player.y, self.player.width, self.player.height)
-        entity_rect = pygame.Rect(entity.x, entity.y, entity.width, entity.height)
-        
-        if player_rect.colliderect(entity_rect):
-            # Calculate overlap in both X and Y directions
-            overlap_x = player_rect.clip(entity_rect).width
-            overlap_y = player_rect.clip(entity_rect).height
-            
-            # Adjust player's position to prevent moving into the entity
-            if overlap_x > overlap_y:
-                # Adjust vertically
-                if self.player.y < entity.y:
-                    self.player.y -= overlap_y
-                else:
-                    self.player.y += overlap_y
-            else:
-                # Adjust horizontally
-                if self.player.x < entity.x:
-                    self.player.x -= overlap_x
-                else:
-                    self.player.x += overlap_x
+       #real method under useful, unneeded
+        pass
 
         
 

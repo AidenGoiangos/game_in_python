@@ -2,8 +2,8 @@ import pygame
 import sys
 from CharachterEntities import *
 from UsefulMethods import *
-from MainMap import MainScreen
-from Cave import CaveScreen
+from Screens.MainMap import MainScreen
+from Screens.CaveMap import CaveScreen
 
 
 class gameScreen:
@@ -14,12 +14,17 @@ class gameScreen:
         self.running = True
         self.screens = []
         self.screen_pointer = 0
-        
+        self.score_value = 0
         self.player = Player(220, 220, 50, 50, (200, 128, 255))
+        self.score_value = 0
         
+
+
         # Initialize Pygame
         pygame.init()
-        
+
+  
+    
 
         # Set up the displays
         mainScreen = MainScreen(self.width, self.height, self.title, self.player)
@@ -29,7 +34,9 @@ class gameScreen:
         self.screens.append(caveScreen)
         
 
-        
+    def show_score(self):
+        self.score_value = self.screens[self.screen_pointer].show_score(self.score_value)
+
     def run(self):
         while self.running:
             x = self.screen_pointer
@@ -41,8 +48,10 @@ class gameScreen:
             if self.screen_pointer != x:
                 self.screens[self.screen_pointer].player.x = 100
                 self.screens[self.screen_pointer].player.y = 100
-            self.screens[self.screen_pointer].update()
             
+
+            self.screens[self.screen_pointer].update()
+            self.show_score()
             
             # Cap the frame rate
             self.screens[self.screen_pointer].clock.tick(60)
