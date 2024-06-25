@@ -15,14 +15,15 @@ class gameScreen:
         self.screens = []
         self.screen_pointer = 0
         
+        self.player = Player(220, 220, 50, 50, (200, 128, 255))
         
         # Initialize Pygame
         pygame.init()
         
 
         # Set up the displays
-        mainScreen = MainScreen(self.width, self.height, self.title)
-        caveScreen = CaveScreen(self.width, self.height, self.title)
+        mainScreen = MainScreen(self.width, self.height, self.title, self.player)
+        caveScreen = CaveScreen(self.width, self.height, self.title, self.player)
         #add them to the screens list
         self.screens.append(mainScreen)
         self.screens.append(caveScreen)

@@ -3,13 +3,12 @@ from CharachterEntities import *
 from UsefulMethods import *
 
 class CaveScreen():
-    def __init__(self, width, height, title):
+    def __init__(self, width, height, title, player):
         self.width = width
         self.height = height
         self.title = title
         self.running = True
         self.objects = []
-        self.screens = []
         self.counter = 0
 
         self.screen = pygame.display.set_mode((self.width, self.height))
@@ -19,7 +18,7 @@ class CaveScreen():
         self.clock = pygame.time.Clock()
         
         # Create a player instance
-        self.player = Player(220, 220, 50, 50, (200, 128, 255))
+        self.player = player
 
         #entities
         self.entity1 = Entity(300, 300, 50, 50, (200, 128, 255))
