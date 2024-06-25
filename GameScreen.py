@@ -76,9 +76,10 @@ class gameScreen:
     def run(self):
         while self.running:
             self.handle_events()
+            self.detect_collisions()
             self.update()
             
-            self.detect_collisions()
+            
             # Cap the frame rate
             self.clock.tick(60)
         self.quit()
