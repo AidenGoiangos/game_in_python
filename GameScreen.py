@@ -2,6 +2,9 @@ import pygame
 import sys
 from CharachterEntities import *
 from UsefulMethods import *
+
+
+
 class gameScreen:
     def __init__(self, width, height, title):
         self.width = width
@@ -9,6 +12,7 @@ class gameScreen:
         self.title = title
         self.running = True
         self.objects = []
+        self.counter = 0
         
         # Initialize Pygame
         pygame.init()
@@ -25,10 +29,12 @@ class gameScreen:
 
         #entities
         self.entity1 = Entity(300, 300, 50, 50, (0, 128, 255))
+        self.entity2 = Entity(600, 600, 50, 50, (0, 128, 255))
 
 
         #add all entities to screen object list
         self.objects.append(self.entity1)
+        self.objects.append(self.entity2)
 
 
     def handle_events(self):
@@ -56,15 +62,14 @@ class gameScreen:
 
         
         #draw entities
-        self.entity1.draw(self.screen)
+        for entit in self.objects:
+            entit.draw(self.screen)
+            draw_hitbox(self.screen, entit)
         
 
 
-        #player hitbox
-        pygame.draw.line(self.screen, (255, 0, 0), (self.player.x, self.player.y), (self.player.x, self.player.y + self.player.height))
-        pygame.draw.line(self.screen, (255, 0, 0), (self.player.x, self.player.y), (self.player.x + self.player.width, self.player.y))
-        pygame.draw.line(self.screen, (255, 0, 0), (self.player.x, self.player.y + self.player.height), (self.player.x + self.player.width, self.player.y + self.player.height))
-        pygame.draw.line(self.screen, (255, 0, 0), (self.player.x + self.player.width, self.player.y), (self.player.x + self.player.width, self.player.y + self.player.height))
+        #hitboxes
+        draw_hitbox(self.screen, self.player)
         # Update the display
         pygame.display.flip()
         
@@ -89,12 +94,36 @@ class gameScreen:
             if (is_between(entity_leftX, entity_rightX, player_leftX) or is_between(entity_leftX, entity_rightX, player_rightX)) and \
                 (is_between(entity_highY, entity_lowY, player_highY) or is_between(entity_highY, entity_lowY, player_lowY)):
                 # Collision detected, handle it
-                self.handle_collision()
+                self.handle_collision(entit)
+                
 
           
 
-    def handle_collision(self):
-        print(f"Collision!")
+    def handle_collision(self, entity):
+        # Determine overlap between player and entity
+        player_rect = pygame.Rect(self.player.x, self.player.y, self.player.width, self.player.height)
+        entity_rect = pygame.Rect(entity.x, entity.y, entity.width, entity.height)
+        
+        if player_rect.colliderect(entity_rect):
+            # Calculate overlap in both X and Y directions
+            overlap_x = player_rect.clip(entity_rect).width
+            overlap_y = player_rect.clip(entity_rect).height
+            
+            # Adjust player's position to prevent moving into the entity
+            if overlap_x > overlap_y:
+                # Adjust vertically
+                if self.player.y < entity.y:
+                    self.player.y -= overlap_y
+                else:
+                    self.player.y += overlap_y
+            else:
+                # Adjust horizontally
+                if self.player.x < entity.x:
+                    self.player.x -= overlap_x
+                else:
+                    self.player.x += overlap_x
+
+        
 
     
 
