@@ -1,7 +1,6 @@
-from GameScreen import gameScreen
+from ScreenManager import gameScreen
 
 
 
-game_screen = gameScreen(800, 600, "Game Screen")
+game_screen = gameScreen(1000, 1000, "Game Screen")
 game_screen.run()
-
